@@ -2,7 +2,7 @@ import { useTransactions } from "../../hooks/useTransactions";
 import { Container } from "./styles";
 
 export function TransactionsTable() {
-  const {transactions } = useTransactions()
+  const { transactions } = useTransactions();
 
   return (
     <Container>
@@ -30,7 +30,7 @@ export function TransactionsTable() {
                 <td>{transaction.category}</td>
                 <td>
                   {new Intl.DateTimeFormat("pt-BR").format(
-                      new Date(transaction.createdAt)
+                    new Date(transaction.createdAt)
                   )}
                 </td>
               </tr>

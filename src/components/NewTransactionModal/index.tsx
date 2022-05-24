@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import Modal from "react-modal";
+import { ToastContainer, toast } from "react-toastify";
 
 import { useTransactions } from "../../hooks/useTransactions";
 
@@ -8,6 +9,7 @@ import outcome from "../../assets/outcome.svg";
 import closeImg from "../../assets/close.svg";
 
 import { Container, RadioBox, TransactionTypeContainer } from "./styles";
+import "react-toastify/dist/ReactToastify.css";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -19,6 +21,7 @@ export function NewTransactionModal({
   onRequestClose,
 }: NewTransactionModalProps) {
   const { createTransaction } = useTransactions();
+  const notify = () => toast.warn("Preencha todos os campos!");
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
@@ -27,6 +30,9 @@ export function NewTransactionModal({
 
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
+    if (!title || !category) {
+      return notify();
+    }
 
     await createTransaction({
       title,
@@ -35,11 +41,11 @@ export function NewTransactionModal({
       type,
     });
 
-    setTitle('')
-    setAmount(0)
-    setCategory('')
-    setType('deposit')
-    onRequestClose()
+    setTitle("");
+    setAmount(0);
+    setCategory("");
+    setType("deposit");
+    onRequestClose();
   }
 
   return (
@@ -105,6 +111,18 @@ export function NewTransactionModal({
 
         <button type="submit">Cadastrar</button>
       </Container>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Modal>
   );
 }
